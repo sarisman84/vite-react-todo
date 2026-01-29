@@ -1,6 +1,6 @@
 # Todo App
 
-This is app is based off [CodingInFlow|Coding In Flow's](https://youtu.be/siTUv1L9ymM) video.
+This is app is based off [Coding In Flow's](https://youtu.be/siTUv1L9ymM) video.
 
 # React + TypeScript + Vite
 
