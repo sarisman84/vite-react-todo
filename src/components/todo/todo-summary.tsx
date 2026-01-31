@@ -1,4 +1,4 @@
-import type { Todo } from "../data/todos";
+import type { Todo } from "../../data/todos";
 
 interface TodoSummaryArgs{
     entries: Todo[],

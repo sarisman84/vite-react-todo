@@ -1,5 +1,5 @@
 import { Trash2 } from "lucide-react";
-import type { Todo } from "../data/todos";
+import type { Todo } from "../../data/todos";
 
 export interface TodoItemArgs {
     item: Todo;
