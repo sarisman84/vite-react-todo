@@ -2,6 +2,7 @@ import AddTodoForm from "./components/add-todo-form";
 import TodoList from "./components/todo/todo-list";
 import TodoSummary from "./components/todo/todo-summary";
 import useTodoLogic from "./hooks/use-todo-logic";
+import useCategory from "./hooks/useCategory";
 
 function App() {
   const {
@@ -11,6 +12,8 @@ function App() {
     removeItem,
     removeAllCompletedItems,
   } = useTodoLogic();
+
+  const { categories, createCategory, removeCategory } = useCategory();
 
   return (
     <main className="py-10 h-screen space-y-5 overflow-y-auto">
