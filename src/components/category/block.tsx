@@ -1,13 +1,14 @@
 import type { Category } from "../../data/category";
-import type { Task } from "../../data/task";
+import type { OnTaskCreate, Task } from "../../data/task";
 import TaskEntry from "../task/entry";
-import CategoryAddEntry from "./add-entry";
+import TaskAddEntry from "../task/add-entry";
 import CategoryTitle from "./title";
 
 interface CategoryBlockContext {
   entries: Task[];
   category: Category;
   updateCategoryTitle: (title: string, id: number) => void;
+  onTaskCreate: OnTaskCreate;
 }
 
 function CategoryBlock(ctx: CategoryBlockContext) {
@@ -18,11 +19,11 @@ function CategoryBlock(ctx: CategoryBlockContext) {
         updateTitle={ctx.updateCategoryTitle}
       />
       {ctx.entries.map((task) => (
-        <p key={task.id}>
+        <div key={task.id}>
           <TaskEntry key={task.id} task={task} />
-        </p>
+        </div>
       ))}
-      <CategoryAddEntry />
+      <TaskAddEntry category={ctx.category} onTaskCreate={ctx.onTaskCreate}/>
     </div>
   );
 }

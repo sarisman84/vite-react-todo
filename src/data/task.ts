@@ -1,5 +1,12 @@
 import { archive_id } from "../hooks/useCategory";
 
+export type OnTaskCreate = (
+  owner_id: number,
+  category_id: number,
+  title: string,
+  description: string,
+) => void;
+
 export interface Task {
   id: number;
   category_id: number;

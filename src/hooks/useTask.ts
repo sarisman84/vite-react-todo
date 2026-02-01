@@ -31,10 +31,10 @@ function useTask() {
   }
 
   function createItem(
+    owner_id: number,
+    category_id: number,
     title: string,
     description: string,
-    owner_id: number[],
-    category_id: number,
   ) {
     const metadata: Metadata = {
       title,
@@ -46,7 +46,7 @@ function useTask() {
     const task: Task = {
       id: Date.now(),
       category_id,
-      owner_id,
+      owner_id: [owner_id],
       metadata,
     };
 

@@ -24,6 +24,8 @@ function App() {
             key={category.id}
             entries={_getTasksByCategory(taskData.entries, category.id)}
             category={category}
+            updateCategoryTitle={catData.updateCategoryTitle}
+            onTaskCreate={taskData.createItem}
           />
         ))}
       </div>

@@ -1,0 +1,102 @@
+import { Plus } from "lucide-react";
+import type { OnTaskCreate } from "../../data/task";
+import { useState } from "react";
+import { DialogBackdrop, DialogPanel, Dialog } from "@headlessui/react";
+import type { Category } from "../../data/category";
+
+const title_input: number = 0;
+const desc_input: number = 1;
+const empty_inputs: string[] = ["", ""];
+
+interface TaskAddEntryContext {
+  category: Category;
+  onTaskCreate: OnTaskCreate;
+}
+
+function TaskAddEntry(ctx: TaskAddEntryContext) {
+  const [dialogOpenState, setDialogOpenState] = useState(false);
+  const [inputs, setInputs] = useState<string[]>(empty_inputs);
+
+  function _updateInput(input_id: number, value: string) {
+    setInputs((prevArray) =>
+      prevArray.map((input, indx) => {
+        input = indx === input_id ? value : input;
+        return input;
+      }),
+    );
+  }
+
+  function _resetInputs() {
+    setInputs(empty_inputs);
+  }
+
+  function _handleSubmission() {
+    const title = inputs[title_input];
+    const desc = inputs[desc_input];
+
+    if (!title.trim()) {
+      return;
+    }
+
+    ctx.onTaskCreate(0, ctx.category.id, title, desc);
+    _resetInputs();
+    setDialogOpenState(false);
+  }
+
+  return (
+    <>
+      <div>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => setDialogOpenState(true)}
+            className="flex items-center gap-2 rounded-md p-1 hover:bg-slate-400 hover:border-slate-200 grow"
+          >
+            <Plus size={20} className="text-gray-500 items-center w-4" />
+            <label className="grow text-center text-gray-500">Add Task</label>
+          </button>
+        </div>
+      </div>
+      <Dialog
+        open={dialogOpenState}
+        onClose={() => setDialogOpenState(false)}
+        className="relative z-50"
+      >
+        <DialogBackdrop className="fixed inset-0 bg-black/30" />
+        <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
+          <DialogPanel className="max-w-lg bg-slate-200 rounded-md px-7 pb-5 space-y-4">
+            <form className="flex gap-2">
+              <input
+                value={inputs[title_input]}
+                onChange={(e) => _updateInput(title_input, e.target.value)}
+                placeholder="New Task"
+                className="flex rounded-md bg-slate-200 py-3 font-bold text-xl"
+              />
+              <label className="text-slate-500 font-medium py-4">
+                in list [{ctx.category.title}]
+              </label>
+            </form>
+            <p className="text-slate-500 font-bold ">Description</p>
+            <form className="flex gap-2 items-center grow">
+              <textarea
+                value={inputs[desc_input]}
+                onChange={(e) => _updateInput(desc_input, e.target.value)}
+                placeholder="Example"
+                className="flex rounded-md grow bg-white p-2 w-auto overflow-y-auto pb-20"
+              />
+            </form>
+            <div className="flex grow justify-center">
+              <button
+                onClick={() => _handleSubmission()}
+                className="items-center p-2 bg-white rounded-md text-slate-500"
+              >
+                Create Task
+              </button>
+            </div>
+          </DialogPanel>
+        </div>
+      </Dialog>
+    </>
+  );
+}
+
+export default TaskAddEntry;
