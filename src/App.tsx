@@ -1,35 +1,27 @@
-import AddTodoForm from "./components/add-todo-form";
-import TodoList from "./components/todo/todo-list";
-import TodoSummary from "./components/todo/todo-summary";
-import useTodoLogic from "./hooks/use-todo-logic";
+import CategoryBlock from "./components/category/block";
+import useTask from "./hooks/useTask";
 import useCategory from "./hooks/useCategory";
+import type { Task } from "./data/task";
+import useUser from "./hooks/useUser";
+
+function _getTasksByCategory(tasks: Task[], id: number) {
+  return tasks.filter((task) => task.category_id === id);
+}
 
 function App() {
-  const {
-    entries,
-    createItem,
-    onItemUpdated,
-    removeItem,
-    removeAllCompletedItems,
-  } = useTodoLogic();
-
-  const { categories, createCategory, removeCategory } = useCategory();
+  const taskData = useTask();
+  const catData = useCategory();
+  const userData = useUser();
 
   return (
-    <main className="py-10 h-screen space-y-5 overflow-y-auto">
-      <h1 className="font-bold text-4xl text-center">Your Todo</h1>
-      <div className="max-w-lg mx-auto bg-slate-100 rounded-md p-5">
-        <TodoList
-          entries={entries}
-          onItemUpdated={onItemUpdated}
-          onItemDeleted={removeItem}
-          onCreateItem={createItem}
-        />
+    <main>
+      <div className="p-2">
+        {catData.categories.map((category) => (
+          <CategoryBlock
+            entries={_getTasksByCategory(taskData.entries, category.id)}
+          />
+        ))}
       </div>
-      <TodoSummary
-        entries={entries}
-        deleteAllCompleted={removeAllCompletedItems}
-      />
     </main>
   );
 }

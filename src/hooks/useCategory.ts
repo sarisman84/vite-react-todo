@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Category } from "../data/category";
 
 export const archive_id: number = -1;
@@ -9,6 +9,9 @@ const empty_array: string = "[]";
 
 function useCategory() {
   const [categories, setCategories] = useState(_tryLoadingStoredCategories());
+  useEffect(() => {
+    localStorage.setItem(empty_array, JSON.stringify(categories));
+  }, [categories]);
 
   function _tryLoadingStoredCategories(): Category[] {
     const savedCategories: Category[] = JSON.parse(
