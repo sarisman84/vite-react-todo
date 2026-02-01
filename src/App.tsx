@@ -4,6 +4,7 @@ import useCategory from "./hooks/useCategory";
 import type { Task } from "./data/task";
 import useUser from "./hooks/useUser";
 import CategoryBlock from "./components/core/category/block";
+import CategoryAddEntry from "./components/core/category/add-category";
 
 function _getTasksByCategory(tasks: Task[], id: number) {
   return tasks.filter((task) => task.category_id === id);
@@ -15,11 +16,11 @@ function App() {
   const userData = useUser();
 
   return (
-    <main className="py-5 h-screen space-y-5 overflow-y-auto bg-slate-500">
-      <h1 className="px-10 font-bold text-4xl text-left text-slate-100">
+    <main className="py-5 h-screen space-y-5 overflow-y-auto bg-background-300">
+      <h1 className="px-10 font-bold text-4xl text-left text-text-900">
         Spyro's Trello Board
       </h1>
-      <div className="px-10">
+      <div className="flex px-10 gap-4">
         {catData.categories.map((category) => (
           <CategoryBlock
             key={category.id}
@@ -30,6 +31,7 @@ function App() {
             currentUser={userData.users[0]}
           />
         ))}
+        <CategoryAddEntry createCategory={catData.createCategory}/>
       </div>
     </main>
   );

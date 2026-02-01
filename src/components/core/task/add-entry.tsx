@@ -43,8 +43,6 @@ function TaskAddEntry(ctx: TaskAddEntryContext) {
     _resetInputs();
   }
 
-  const tag_category: string = "Category";
-
   return (
     <>
       <WizardModal
@@ -59,7 +57,7 @@ function TaskAddEntry(ctx: TaskAddEntryContext) {
               value={inputs[title_input]}
               onChange={(e) => _updateInput(title_input, e.target.value)}
               placeholder="New Task"
-              className="font-medium self-start"
+              className="font-medium self-start bg-background-100 rounded-md p-2 shadow"
             />
             <div className="flex flex-col space-y-1">
               <TagList title={"Category"} tag={ctx.category.title} />
@@ -67,58 +65,17 @@ function TaskAddEntry(ctx: TaskAddEntryContext) {
             </div>
           </div>
 
-          <p className="text-slate-500 font-bold h-3">Description</p>
+          <p className="text-text font-bold h-3">Description</p>
           <form className="flex gap-2 items-center grow">
             <textarea
               value={inputs[desc_input]}
               onChange={(e) => _updateInput(desc_input, e.target.value)}
               placeholder="Example"
-              className="flex rounded-md grow bg-white p-2 w-auto overflow-y-auto pb-20"
+              className="flex rounded-md grow bg-background-100 p-2 w-auto overflow-y-auto pb-20 shadow"
             />
           </form>
         </div>
       </WizardModal>
-      {/* <Dialog
-        open={dialogOpenState}
-        onClose={() => setDialogOpenState(false)}
-        className="relative z-50"
-      >
-        <DialogBackdrop className="fixed inset-0 bg-black/30" />
-        <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-          <DialogPanel className="w-2xl bg-slate-200 rounded-md px-7 pb-5 space-y-4">
-            <div className="flex justify-between w-full pt-4 text-2xl">
-              <input
-                value={inputs[title_input]}
-                onChange={(e) => _updateInput(title_input, e.target.value)}
-                placeholder="New Task"
-                className="font-medium self-start"
-              />
-              <div className="flex flex-col space-y-1">
-                <TagList title={"Category"} tag={ctx.category.title} />
-                <TagList title={"Assignees"} tag={ctx.user.name} />
-              </div>
-            </div>
-
-            <p className="text-slate-500 font-bold h-3">Description</p>
-            <form className="flex gap-2 items-center grow">
-              <textarea
-                value={inputs[desc_input]}
-                onChange={(e) => _updateInput(desc_input, e.target.value)}
-                placeholder="Example"
-                className="flex rounded-md grow bg-white p-2 w-auto overflow-y-auto pb-20"
-              />
-            </form>
-            <div className="flex grow justify-center">
-              <button
-                onClick={() => _handleSubmission()}
-                className="items-center p-2 bg-white rounded-md text-slate-500"
-              >
-                Create Task
-              </button>
-            </div>
-          </DialogPanel>
-        </div>
-      </Dialog> */}
     </>
   );
 }

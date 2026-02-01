@@ -15,7 +15,7 @@ interface CategoryBlockContext {
 
 function CategoryBlock(ctx: CategoryBlockContext) {
   return (
-    <div className="flex flex-col p-2 space-y-2 w-100 min-h-100 max-h-full overflow-y-auto bg-slate-300 rounded-md justify-between">
+    <div className="p-2 space-y-2 w-100 bg-background-200 rounded-md max-h-fit">
       <div className="p-2 space-y-2">
         <CategoryTitle
           category={ctx.category}
@@ -23,7 +23,7 @@ function CategoryBlock(ctx: CategoryBlockContext) {
         />
         {ctx.entries.map((task) => (
           <div key={task.id}>
-            <TaskEntry key={task.id} task={task}/>
+            <TaskEntry key={task.id} task={task} />
           </div>
         ))}
       </div>
