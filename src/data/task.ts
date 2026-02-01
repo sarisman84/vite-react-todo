@@ -1,3 +1,5 @@
+import { archive_id } from "../hooks/useCategory";
+
 export interface Task {
   id: number;
   category_id: number;
@@ -9,6 +11,41 @@ export interface Metadata {
   title: string;
   description: string;
   completed: boolean;
-  completion_date: Date;
+  completion_date: number;
 }
 
+export const archiveExampleTasks: Task[] = [
+  {
+    id: 1,
+    category_id: archive_id,
+    owner_id: [0],
+    metadata: {
+      title: "Example Task",
+      description: "This is an example task",
+      completed: false,
+      completion_date: Date.now(),
+    },
+  },
+  {
+    id: 2,
+    category_id: archive_id,
+    owner_id: [0],
+    metadata: {
+      title: "Another Example Task",
+      description: "This is another example task",
+      completed: false,
+      completion_date: Date.now(),
+    },
+  },
+  {
+    id: 3,
+    category_id: archive_id,
+    owner_id: [0],
+    metadata: {
+      title: "Completed Task",
+      description: "This is a completed task",
+      completed: true,
+      completion_date: Date.now(),
+    },
+  },
+];

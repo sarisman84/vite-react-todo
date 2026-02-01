@@ -1,17 +1,22 @@
 import { useEffect, useState } from "react";
-import type { Metadata, Task } from "../data/task";
+import { archiveExampleTasks, type Metadata, type Task } from "../data/task";
 import { archive_id } from "./useCategory";
 
 const task_id: string = "tasks";
 const empty_array: string = "[]";
 
+function _tryLoadingTasks(): Task[] {
+  let savedEntries: Task[] = JSON.parse(
+    localStorage.getItem(task_id) || empty_array,
+  );
+  if (savedEntries.length === 0) {
+    savedEntries = [...archiveExampleTasks];
+  }
+  return savedEntries;
+}
+
 function useTask() {
-  const [entries, setData] = useState(() => {
-    const savedEntries: Task[] = JSON.parse(
-      localStorage.getItem(task_id) || empty_array,
-    );
-    return savedEntries;
-  });
+  const [entries, setData] = useState(_tryLoadingTasks());
 
   useEffect(() => {
     localStorage.setItem(empty_array, JSON.stringify(entries));
@@ -35,7 +40,7 @@ function useTask() {
       title,
       description,
       completed: false,
-      completion_date: Date.prototype,
+      completion_date: Date.now(),
     };
 
     const task: Task = {

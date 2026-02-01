@@ -53,12 +53,22 @@ function useCategory() {
     onCategoryRemoved(id);
   }
 
+  function updateCategoryTitle(title: string, id: number) {
+    setCategories((prevArray) =>
+      prevArray.map((category) => {
+        category.title = category.id === id ? title : category.title;
+        return category;
+      }),
+    );
+  }
+
   _tryCreatingArchive();
 
   return {
     categories,
     createCategory,
     removeCategory,
+    updateCategoryTitle,
   };
 }
 

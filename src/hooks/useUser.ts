@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { User } from "../data/user";
+import { defaultUser, type User } from "../data/user";
 
 export type OnUserRemoved = (id: number) => void;
 
@@ -7,7 +7,10 @@ const user_id: string = "users";
 const empty_array: string = "[]";
 
 function _tryLoadingUsers(): User[] {
-  const savedUsers = JSON.parse(localStorage.getItem(user_id) || empty_array);
+  let savedUsers = JSON.parse(localStorage.getItem(user_id) || empty_array);
+  if (savedUsers.length === 0) {
+    savedUsers = [defaultUser];
+  }
   return savedUsers;
 }
 
