@@ -23,7 +23,7 @@ function CategoryBlock(ctx: CategoryBlockContext) {
         />
         {ctx.entries.map((task) => (
           <div key={task.id}>
-            <TaskEntry key={task.id} task={task} />
+            <TaskEntry key={task.id} task={task}/>
           </div>
         ))}
       </div>
