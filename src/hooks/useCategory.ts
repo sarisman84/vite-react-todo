@@ -10,7 +10,7 @@ const empty_array: string = "[]";
 function useCategory() {
   const [categories, setCategories] = useState(_tryLoadingStoredCategories());
   useEffect(() => {
-    localStorage.setItem(empty_array, JSON.stringify(categories));
+    localStorage.setItem(category_id, JSON.stringify(categories));
   }, [categories]);
 
   function _tryLoadingStoredCategories(): Category[] {

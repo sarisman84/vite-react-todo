@@ -19,7 +19,7 @@ function useTask() {
   const [entries, setData] = useState(_tryLoadingTasks());
 
   useEffect(() => {
-    localStorage.setItem(empty_array, JSON.stringify(entries));
+    localStorage.setItem(task_id, JSON.stringify(entries));
   }, [entries]);
 
   function onItemUpdated(id: number, completed: boolean) {

@@ -1,6 +1,7 @@
 import { useState } from "react";
-import type { Category } from "../../data/category";
-import { archive_id } from "../../hooks/useCategory";
+import type { Category } from "../../../data/category";
+import { archive_id } from "../../../hooks/useCategory";
+
 
 interface CategoryTitleContext {
   category: Category;

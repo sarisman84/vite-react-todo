@@ -1,8 +1,9 @@
-import CategoryBlock from "./components/category/block";
+
 import useTask from "./hooks/useTask";
 import useCategory from "./hooks/useCategory";
 import type { Task } from "./data/task";
 import useUser from "./hooks/useUser";
+import CategoryBlock from "./components/core/category/block";
 
 function _getTasksByCategory(tasks: Task[], id: number) {
   return tasks.filter((task) => task.category_id === id);
@@ -26,6 +27,7 @@ function App() {
             category={category}
             updateCategoryTitle={catData.updateCategoryTitle}
             onTaskCreate={taskData.createItem}
+            currentUser={userData.users[0]}
           />
         ))}
       </div>

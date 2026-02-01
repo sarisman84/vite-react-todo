@@ -1,14 +1,18 @@
 import { Plus } from "lucide-react";
-import type { OnTaskCreate } from "../../data/task";
+import type { OnTaskCreate } from "../../../data/task";
 import { useState } from "react";
 import { DialogBackdrop, DialogPanel, Dialog } from "@headlessui/react";
-import type { Category } from "../../data/category";
+import type { Category } from "../../../data/category";
+import type { User } from "../../../data/user";
+import TagList from "../../elements/tag-list";
+import SideBarRight from "../../elements/side-bar/side-bar-right";
 
 const title_input: number = 0;
 const desc_input: number = 1;
 const empty_inputs: string[] = ["", ""];
 
 interface TaskAddEntryContext {
+  user: User;
   category: Category;
   onTaskCreate: OnTaskCreate;
 }
@@ -43,10 +47,12 @@ function TaskAddEntry(ctx: TaskAddEntryContext) {
     setDialogOpenState(false);
   }
 
+  const tag_category: string = "Category";
+
   return (
     <>
       <div>
-        <div className="flex items-center gap-1">
+        <div className="flex justify-center gap-1">
           <button
             onClick={() => setDialogOpenState(true)}
             className="flex items-center gap-2 rounded-md p-1 hover:bg-slate-400 hover:border-slate-200 grow"
@@ -63,19 +69,21 @@ function TaskAddEntry(ctx: TaskAddEntryContext) {
       >
         <DialogBackdrop className="fixed inset-0 bg-black/30" />
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-          <DialogPanel className="max-w-lg bg-slate-200 rounded-md px-7 pb-5 space-y-4">
-            <form className="flex gap-2">
+          <DialogPanel className="w-2xl bg-slate-200 rounded-md px-7 pb-5 space-y-4">
+            <div className="flex justify-between w-full pt-4 text-2xl">
               <input
                 value={inputs[title_input]}
                 onChange={(e) => _updateInput(title_input, e.target.value)}
                 placeholder="New Task"
-                className="flex rounded-md bg-slate-200 py-3 font-bold text-xl"
+                className="font-medium self-start"
               />
-              <label className="text-slate-500 font-medium py-4">
-                in list [{ctx.category.title}]
-              </label>
-            </form>
-            <p className="text-slate-500 font-bold ">Description</p>
+              <div className="flex flex-col space-y-1">
+                <TagList title={"Category"} tag={ctx.category.title} />
+                <TagList title={"Assignees"} tag={ctx.user.name} />
+              </div>
+            </div>
+
+            <p className="text-slate-500 font-bold h-3">Description</p>
             <form className="flex gap-2 items-center grow">
               <textarea
                 value={inputs[desc_input]}

@@ -1,4 +1,4 @@
-import type { Task } from "../../data/task";
+import type { Task } from "../../../data/task";
 
 interface TaskEntryContext {
   task: Task;
