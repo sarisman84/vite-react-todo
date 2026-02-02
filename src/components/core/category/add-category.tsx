@@ -1,12 +1,12 @@
 import { Plus } from "lucide-react";
-import type { OnCreateCategory } from "../../../data/category";
-import WizardModal from "../../elements/WizardModal/wizard-modal";
+import type { OnCategoryCreated } from "../../../data/category";
+import WizardModal from "../../elements/wizard-modal";
 
-interface CategoryAddEntryContext {
-  createCategory: OnCreateCategory;
+interface CategoryAddEntryProps {
+  createCategory: OnCategoryCreated;
 }
 
-function CategoryAddEntry(ctx: CategoryAddEntryContext) {
+function CategoryAddEntry(ctx: CategoryAddEntryProps) {
   function _createNewCategory() {
     ctx.createCategory("New Category");
   }

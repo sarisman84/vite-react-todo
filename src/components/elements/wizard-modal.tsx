@@ -1,14 +1,14 @@
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import React from "react";
 
-interface CreateWizardContext extends React.PropsWithChildren {
+interface WizardModalProps extends React.PropsWithChildren {
   openFlag: boolean;
   setOpenFlag: (value: boolean) => void;
 }
 
-interface BodyContext extends React.PropsWithChildren {}
+interface BodyProps extends React.PropsWithChildren {}
 
-function Body(ctx: BodyContext) {
+function Body(ctx: BodyProps) {
   return (
     <div className="flex flex-col gap-1 self-center w-full">
       <div className="flex grow justify-center pt-4">
@@ -24,7 +24,7 @@ function Body(ctx: BodyContext) {
   );
 }
 
-function WizardModal(ctx: CreateWizardContext) {
+function WizardModal(ctx: WizardModalProps) {
   return (
     <>
       <Dialog

@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import type { Category } from "../data/category";
+import type { Category, CategoryEvents } from "../data/category";
 
 export const archive_id: number = -1;
-export type OnCategoryRemoved = (id: number) => void;
 
 const category_id: string = "categories";
 const empty_array: string = "[]";
 
-function useCategory() {
+function useCategory(): [Category[], CategoryEvents] {
   const [categories, setCategories] = useState(_tryLoadingStoredCategories());
   useEffect(() => {
     localStorage.setItem(category_id, JSON.stringify(categories));
@@ -31,10 +30,10 @@ function useCategory() {
       return;
     }
 
-    createCategory("Archive", archive_id);
+    onCategoryCreated("Archive", archive_id);
   }
 
-  function createCategory(title: string, id: number = 0) {
+  function onCategoryCreated(title: string, id: number = 0) {
     setCategories((prevArray) => [
       {
         id: id === 0 ? Date.now() : id,
@@ -45,15 +44,11 @@ function useCategory() {
     ]);
   }
 
-  function removeCategory(
-    id: number,
-    onCategoryRemoved: OnCategoryRemoved = (_) => {},
-  ) {
+  function onCategoryRemoved(id: number) {
     setCategories((prevArray) => prevArray.filter((item) => item.id !== id));
-    onCategoryRemoved(id);
   }
 
-  function updateCategoryTitle(title: string, id: number) {
+  function onCategoryTitleUpdated(title: string, id: number) {
     setCategories((prevArray) =>
       prevArray.map((category) => {
         category.title = category.id === id ? title : category.title;
@@ -64,12 +59,13 @@ function useCategory() {
 
   _tryCreatingArchive();
 
-  return {
-    categories,
-    createCategory,
-    removeCategory,
-    updateCategoryTitle,
+  const events: CategoryEvents = {
+    onCategoryRemoved,
+    onCategoryCreated,
+    onCategoryTitleUpdated,
   };
+
+  return [categories, events];
 }
 
 export default useCategory;

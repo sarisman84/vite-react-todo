@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { archiveExampleTasks, type Metadata, type Task } from "../data/task";
+import {
+  archiveExampleTasks,
+  type Metadata,
+  type Task,
+  type TaskEvents,
+} from "../data/task";
 import { archive_id } from "./useCategory";
 
 const task_id: string = "tasks";
@@ -15,7 +20,7 @@ function _tryLoadingTasks(): Task[] {
   return savedEntries;
 }
 
-function useTask() {
+function useTask(): [Task[], TaskEvents] {
   const [entries, setData] = useState(_tryLoadingTasks());
 
   useEffect(() => {
@@ -30,7 +35,7 @@ function useTask() {
     );
   }
 
-  function createItem(
+  function onTaskCreated(
     owner_id: number,
     category_id: number,
     title: string,
@@ -53,11 +58,11 @@ function useTask() {
     setData((prevEntries) => [task, ...prevEntries]);
   }
 
-  function removeItem(id: number) {
+  function onTaskRemoved(id: number) {
     setData((prevEntries) => prevEntries.filter((item) => item.id !== id));
   }
 
-  function moveItem(id: number, target_category: number) {
+  function onTaskMoved(id: number, target_category: number) {
     setData((prevEntries) =>
       prevEntries.map((item) => {
         item.category_id = item.id === id ? target_category : item.category_id;
@@ -66,18 +71,17 @@ function useTask() {
     );
   }
 
-  function archiveItem(id: number) {
-    moveItem(id, archive_id);
+  function onTaskArchived(id: number) {
+    onTaskMoved(id, archive_id);
   }
-
-  return {
-    entries,
-    onItemUpdated,
-    createItem,
-    removeItem,
-    moveItem,
-    archiveItem,
+  const events: TaskEvents = {
+    onTaskArchived,
+    onTaskMoved,
+    onTaskRemoved,
+    onTaskCreated,
   };
+  
+  return [entries, events];
 }
 
 export default useTask;

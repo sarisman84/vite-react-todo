@@ -8,6 +8,15 @@ export type OnTaskCreate = (
 ) => void;
 
 export type OnTaskRemove = (id: number) => void;
+export type OnTaskMoved = (id: number, target_category_id: number) => void;
+export type OnTaskArchived = (id: number) => void;
+
+export type TaskEvents = {
+  onTaskCreated: OnTaskCreate;
+  onTaskRemoved: OnTaskRemove;
+  onTaskMoved: OnTaskMoved;
+  onTaskArchived: OnTaskArchived;
+};
 
 export interface Task {
   id: number;

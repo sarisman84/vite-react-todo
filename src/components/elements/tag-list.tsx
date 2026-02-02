@@ -1,9 +1,9 @@
-interface TagListContext {
+interface TagListProps {
   title: string;
   tag: string;
 }
 
-function TagList(ctx: TagListContext) {
+function TagList(ctx: TagListProps) {
   return (
     <p className="flex justify-between w-40 text-text-900 text-sm items-center gap-2">
       {ctx.title}:

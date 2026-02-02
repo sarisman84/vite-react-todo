@@ -1,38 +1,38 @@
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import type { Category } from "../../../data/category";
-import type { OnTaskCreate } from "../../../data/task";
 import type { User } from "../../../data/user";
 import TagList from "../../elements/tag-list";
-import WizardModal from "../../elements/WizardModal/wizard-modal";
+import type { AppData } from "../../../data/app";
+import WizardModal from "../../elements/wizard-modal";
 
-interface TaskCreateModalContext {
+interface TaskCreateModalProps {
   user: User;
   category: Category;
-  onTaskCreate: OnTaskCreate;
+  root: AppData;
 }
 
-interface AddTaskButtonContext {
+interface AddTaskButtonProps {
   setOpenFlag: (value: boolean) => void;
 }
 
-interface TaskSectionContext {
+interface TaskSectionProps {
   user: User;
   category: Category;
   input: string;
   setInput: (value: string) => void;
 }
 
-interface DescriptionContext {
+interface DescriptionProps {
   input: string;
   setInput: (value: string) => void;
 }
 
-interface SubmitButtonContext {
+interface SubmitProps {
   handleSubmit: () => void;
 }
 
-function AddTaskButton(ctx: AddTaskButtonContext) {
+function AddTaskButton(ctx: AddTaskButtonProps) {
   return (
     <div className="flex justify-center gap-1 px-2 pb-2">
       <button
@@ -46,7 +46,7 @@ function AddTaskButton(ctx: AddTaskButtonContext) {
   );
 }
 
-function NewTask(ctx: TaskSectionContext) {
+function NewTask(ctx: TaskSectionProps) {
   return (
     <div className="flex justify-between w-full pt-4 text-xl gap-10">
       <input
@@ -63,7 +63,7 @@ function NewTask(ctx: TaskSectionContext) {
   );
 }
 
-function Description(ctx: DescriptionContext) {
+function Description(ctx: DescriptionProps) {
   return (
     <>
       <p className="text-text font-bold h-3">Description</p>
@@ -79,7 +79,7 @@ function Description(ctx: DescriptionContext) {
   );
 }
 
-function SubmitButton(ctx: SubmitButtonContext) {
+function SubmitButton(ctx: SubmitProps) {
   return (
     <div className="flex justify-center">
       <button
@@ -92,7 +92,7 @@ function SubmitButton(ctx: SubmitButtonContext) {
   );
 }
 
-function TaskCreateModal(ctx: TaskCreateModalContext) {
+function TaskCreateModal(ctx: TaskCreateModalProps) {
   const [titleInput, setTitleInput] = useState("");
   const [descInput, setDescInput] = useState("");
   const [openFlag, setOpenFlag] = useState<boolean>(false);
@@ -102,7 +102,7 @@ function TaskCreateModal(ctx: TaskCreateModalContext) {
       return;
     }
 
-    ctx.onTaskCreate(ctx.user.id, ctx.category.id, titleInput, descInput);
+    ctx.root.events.task.onTaskCreated(ctx.user.id, ctx.category.id, titleInput, descInput);
     setTitleInput("");
     setDescInput("");
     setOpenFlag(false);

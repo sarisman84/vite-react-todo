@@ -1,29 +1,23 @@
-import { Edit } from "lucide-react";
+import { TableOfContents } from "lucide-react";
 import type { Category } from "../../../data/category";
-import type { Task, OnTaskCreate, OnTaskRemove } from "../../../data/task";
-import type { User } from "../../../data/user";
 import TaskCreateModal from "../task/task-create-modal";
 import TaskEntry from "../task/entry";
 import CategoryTitle from "./title";
 import { useState } from "react";
-import { archive_id } from "../../../hooks/useCategory";
+import ContextMenu from "../../elements/context-menu";
+import type { AppData } from "../../../data/app";
 
-interface CategoryBlockContext {
-  entries: Task[];
-  users: User[];
+interface CategoryBlockProps {
+  root: AppData;
   category: Category;
-  currentUser: User;
-  updateCategoryTitle: (title: string, id: number) => void;
-  onTaskCreate: OnTaskCreate;
-  onTaskRemove: OnTaskRemove;
 }
 
-interface HeaderContext {
+interface HeaderProps {
   category: Category;
   updateCategoryTitle: (title: string, id: number) => void;
 }
 
-function Header(ctx: HeaderContext) {
+function Header(ctx: HeaderProps) {
   const [editFlag, setEditFlag] = useState(false);
 
   function _toggleEditFlag() {
@@ -37,7 +31,7 @@ function Header(ctx: HeaderContext) {
         updateTitle={ctx.updateCategoryTitle}
         editFlag={editFlag}
       />
-      {ctx.category.id !== archive_id && (
+      {/* {ctx.category.id !== archive_id && (
         <button onClick={() => _toggleEditFlag()}>
           <Edit
             size={15}
@@ -48,30 +42,50 @@ function Header(ctx: HeaderContext) {
             }
           />
         </button>
-      )}
+      )} */}
+      <ContextMenu
+        menuButton={
+          <TableOfContents
+            size={20}
+            className="text-text-600 hover:text-text-900"
+          />
+        }
+      >
+        <button className="text-sm">Add Task</button>
+        <button className="text-sm">Delete Category</button>
+      </ContextMenu>
     </div>
   );
 }
 
-function CategoryBlock(ctx: CategoryBlockContext) {
+function CategoryBlock(ctx: CategoryBlockProps) {
+  const filteredTasks = ctx.root.data.tasks.filter(
+    (task) => task.category_id === ctx.category.id,
+  );
+
   return (
     <div className="p-2 space-y-2 w-100 bg-background-200 rounded-md max-h-fit">
       <div className="p-2 space-y-2">
         <Header
           category={ctx.category}
-          updateCategoryTitle={ctx.updateCategoryTitle}
+          updateCategoryTitle={ctx.root.events.category.onCategoryTitleUpdated}
         />
 
-        {ctx.entries.map((task) => (
+        {filteredTasks.map((task) => (
           <div key={task.id}>
-            <TaskEntry key={task.id} task={task} users={ctx.users} deleteTask={ctx.onTaskRemove} />
+            <TaskEntry
+              key={task.id}
+              task={task}
+              users={ctx.root.data.users}
+              deleteTask={ctx.root.events.task.onTaskRemoved}
+            />
           </div>
         ))}
       </div>
       <TaskCreateModal
         category={ctx.category}
-        onTaskCreate={ctx.onTaskCreate}
-        user={ctx.currentUser}
+        user={ctx.root.runtime.currentUser}
+        root={ctx.root}
       />
     </div>
   );
