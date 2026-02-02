@@ -1,8 +1,8 @@
-import { Edit, Pen, PenIcon } from "lucide-react";
+import { Edit } from "lucide-react";
 import type { Category } from "../../../data/category";
 import type { Task, OnTaskCreate } from "../../../data/task";
 import type { User } from "../../../data/user";
-import TaskCreateModal from "../task/add-entry";
+import TaskCreateModal from "../task/task-create-modal";
 import TaskEntry from "../task/entry";
 import CategoryTitle from "./title";
 import { useState } from "react";
