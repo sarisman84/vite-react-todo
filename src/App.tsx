@@ -1,32 +1,38 @@
-import AddTodoForm from "./components/add-todo-form";
-import TodoList from "./components/todo/todo-list";
-import TodoSummary from "./components/todo/todo-summary";
-import useTodoLogic from "./hooks/use-todo-logic";
+
+import useTask from "./hooks/useTask";
+import useCategory from "./hooks/useCategory";
+import type { Task } from "./data/task";
+import useUser from "./hooks/useUser";
+import CategoryBlock from "./components/core/category/block";
+import CategoryAddEntry from "./components/core/category/add-category";
+
+function _getTasksByCategory(tasks: Task[], id: number) {
+  return tasks.filter((task) => task.category_id === id);
+}
 
 function App() {
-  const {
-    entries,
-    createItem,
-    onItemUpdated,
-    removeItem,
-    removeAllCompletedItems,
-  } = useTodoLogic();
+  const taskData = useTask();
+  const catData = useCategory();
+  const userData = useUser();
 
   return (
-    <main className="py-10 h-screen space-y-5 overflow-y-auto">
-      <h1 className="font-bold text-4xl text-center">Your Todo</h1>
-      <div className="max-w-lg mx-auto bg-slate-100 rounded-md p-5">
-        <TodoList
-          entries={entries}
-          onItemUpdated={onItemUpdated}
-          onItemDeleted={removeItem}
-          onCreateItem={createItem}
-        />
+    <main className="py-5 h-screen space-y-5 overflow-y-auto bg-background-300">
+      <h1 className="px-10 font-bold text-4xl text-left text-text-900">
+        Spyro's Trello Board
+      </h1>
+      <div className="flex px-10 gap-4">
+        {catData.categories.map((category) => (
+          <CategoryBlock
+            key={category.id}
+            entries={_getTasksByCategory(taskData.entries, category.id)}
+            category={category}
+            updateCategoryTitle={catData.updateCategoryTitle}
+            onTaskCreate={taskData.createItem}
+            currentUser={userData.users[0]}
+          />
+        ))}
+        <CategoryAddEntry createCategory={catData.createCategory}/>
       </div>
-      <TodoSummary
-        entries={entries}
-        deleteAllCompleted={removeAllCompletedItems}
-      />
     </main>
   );
 }
