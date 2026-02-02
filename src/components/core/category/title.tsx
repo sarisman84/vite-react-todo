@@ -2,38 +2,62 @@ import { useState } from "react";
 import type { Category } from "../../../data/category";
 import { archive_id } from "../../../hooks/useCategory";
 
-
 interface CategoryTitleContext {
+  category: Category;
+  editFlag: boolean;
+  updateTitle: (title: string, id: number) => void;
+}
+
+interface TitleContext {
+  category: Category;
+}
+
+interface EditableTitleContext {
   category: Category;
   updateTitle: (title: string, id: number) => void;
 }
 
-function CategoryTitle({ category, updateTitle }: CategoryTitleContext) {
-  const [input, setInput] = useState(category.title);
+function Title(ctx: TitleContext) {
+  return (
+    <label className="text-2xs font-bold text-text-700">
+      {ctx.category.title}
+    </label>
+  );
+}
 
-  function _updateCategoryTitle(result: React.SubmitEvent<HTMLFormElement>) {
-    result.preventDefault();
+function EditableTitle(ctx: EditableTitleContext) {
+  const [input, setInput] = useState("");
 
+  function _updateCategoryTitle(_: FormData) {
     if (!input.trim()) {
       return;
     }
 
-    updateTitle(input, category.id);
+    ctx.updateTitle(input, ctx.category.id);
     setInput(input);
   }
 
   return (
-    <form className="px-1" onSubmit={_updateCategoryTitle}>
-      {category.id === archive_id && (
-        <label className="text-2xs font-bold">Archive</label>
-      )}
-      {category.id !== archive_id && (
-        <input
-          className="text-2xs font-bold"
-          onChange={(e) => setInput(e.target.value)}
-        />
-      )}
+    <form className="px-1" action={_updateCategoryTitle}>
+      <input
+        value={input}
+        className="text-2xs font-bold text-text-950"
+        onChange={(e) => setInput(e.target.value)}
+        placeholder={ctx.category.title}
+      />
     </form>
+  );
+}
+
+function CategoryTitle(ctx: CategoryTitleContext) {
+  return (
+    <>
+      {ctx.editFlag ? (
+        <EditableTitle category={ctx.category} updateTitle={ctx.updateTitle} />
+      ) : (
+        <Title category={ctx.category} />
+      )}
+    </>
   );
 }
 
