@@ -102,9 +102,10 @@ function TaskCreateModal(ctx: TaskCreateModalContext) {
       return;
     }
 
-    ctx.onTaskCreate(0, ctx.category.id, titleInput, descInput);
+    ctx.onTaskCreate(ctx.user.id, ctx.category.id, titleInput, descInput);
     setTitleInput("");
     setDescInput("");
+    setOpenFlag(false);
   }
 
   return (

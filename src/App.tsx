@@ -28,7 +28,9 @@ function App() {
             category={category}
             updateCategoryTitle={catData.updateCategoryTitle}
             onTaskCreate={taskData.createItem}
+            onTaskRemove={taskData.removeItem}
             currentUser={userData.users[0]}
+            users={userData.users}
           />
         ))}
         <CategoryAddEntry createCategory={catData.createCategory}/>

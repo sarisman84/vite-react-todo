@@ -7,6 +7,8 @@ export type OnTaskCreate = (
   description: string,
 ) => void;
 
+export type OnTaskRemove = (id: number) => void;
+
 export interface Task {
   id: number;
   category_id: number;
@@ -25,7 +27,7 @@ export const archiveExampleTasks: Task[] = [
   {
     id: 1,
     category_id: archive_id,
-    owner_id: [0],
+    owner_id: [1],
     metadata: {
       title: "Example Task",
       description: "This is an example task",
@@ -36,7 +38,7 @@ export const archiveExampleTasks: Task[] = [
   {
     id: 2,
     category_id: archive_id,
-    owner_id: [0],
+    owner_id: [1],
     metadata: {
       title: "Another Example Task",
       description: "This is another example task",
@@ -47,7 +49,7 @@ export const archiveExampleTasks: Task[] = [
   {
     id: 3,
     category_id: archive_id,
-    owner_id: [0],
+    owner_id: [1],
     metadata: {
       title: "Completed Task",
       description: "This is a completed task",

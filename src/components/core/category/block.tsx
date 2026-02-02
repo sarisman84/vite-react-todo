@@ -1,6 +1,6 @@
 import { Edit } from "lucide-react";
 import type { Category } from "../../../data/category";
-import type { Task, OnTaskCreate } from "../../../data/task";
+import type { Task, OnTaskCreate, OnTaskRemove } from "../../../data/task";
 import type { User } from "../../../data/user";
 import TaskCreateModal from "../task/task-create-modal";
 import TaskEntry from "../task/entry";
@@ -10,10 +10,12 @@ import { archive_id } from "../../../hooks/useCategory";
 
 interface CategoryBlockContext {
   entries: Task[];
+  users: User[];
   category: Category;
   currentUser: User;
   updateCategoryTitle: (title: string, id: number) => void;
   onTaskCreate: OnTaskCreate;
+  onTaskRemove: OnTaskRemove;
 }
 
 interface HeaderContext {
@@ -27,8 +29,6 @@ function Header(ctx: HeaderContext) {
   function _toggleEditFlag() {
     setEditFlag(!editFlag);
   }
-
-
 
   return (
     <div className="flex justify-between">
@@ -64,7 +64,7 @@ function CategoryBlock(ctx: CategoryBlockContext) {
 
         {ctx.entries.map((task) => (
           <div key={task.id}>
-            <TaskEntry key={task.id} task={task} />
+            <TaskEntry key={task.id} task={task} users={ctx.users} deleteTask={ctx.onTaskRemove} />
           </div>
         ))}
       </div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { defaultUser, type User } from "../data/user";
 
 export type OnUserRemoved = (id: number) => void;
@@ -16,6 +16,10 @@ function _tryLoadingUsers(): User[] {
 
 function useUser() {
   const [users, setUsers] = useState(_tryLoadingUsers());
+
+  useEffect(() => {
+    localStorage.setItem(user_id, JSON.stringify(users));
+  }, [users]);
 
   function createUser(name: string) {
     setUsers((prevArray) => [
