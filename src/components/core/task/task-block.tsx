@@ -4,13 +4,13 @@ import type { User } from "../../../data/user";
 import Label from "../../elements/label";
 import { Trash } from "lucide-react";
 
-interface TaskEntryContext {
+interface TaskBlockProps {
   task: Task;
   users: User[];
   deleteTask: OnTaskRemove;
 }
 
-interface ToolbarContext {
+interface ToolbarProps {
   task: Task;
   mouseHover: boolean;
   deleteTask: OnTaskRemove;
@@ -20,22 +20,22 @@ function _getUser(id: number, users: User[]): User | undefined {
   return users.find((user) => user.id === id);
 }
 
-function Toolbar(ctx: ToolbarContext) {
+function Toolbar(ctx: ToolbarProps) {
   return (
     <div className="flex grow justify-end gap-1">
       {ctx.mouseHover && (
-        <button
+        <a
           className="flex flex-col justify-start"
           onClick={() => ctx.deleteTask(ctx.task.id)}
         >
           <Trash size={18} className="text-text-600 hover:text-text-900" />
-        </button>
+        </a>
       )}
     </div>
   );
 }
 
-function TaskEntry(ctx: TaskEntryContext) {
+function TaskBlock(ctx: TaskBlockProps) {
   //const [editFlag, setEditFlag] = useState(false);
   const [mouseHover, setMouseHover] = useState(false);
 
@@ -68,4 +68,4 @@ function TaskEntry(ctx: TaskEntryContext) {
   );
 }
 
-export default TaskEntry;
+export default TaskBlock;

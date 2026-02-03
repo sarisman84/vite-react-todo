@@ -1,8 +1,8 @@
 import useTask from "./hooks/useTask";
 import useCategory from "./hooks/useCategory";
 import useUser from "./hooks/useUser";
-import CategoryBlock from "./components/core/category/block";
-import CategoryAddEntry from "./components/core/category/add-category";
+import CategoryBlock from "./components/core/category/category-block";
+import CategoryCreateButton from "./components/core/category/category-create-button";
 import type { AppData } from "./data/app";
 import { defaultUser } from "./data/user";
 
@@ -38,7 +38,7 @@ function App() {
         {root.data.categories.map((category) => (
           <CategoryBlock key={category.id} category={category} root={root} />
         ))}
-        <CategoryAddEntry
+        <CategoryCreateButton
           createCategory={root.events.category.onCategoryCreated}
         />
       </div>

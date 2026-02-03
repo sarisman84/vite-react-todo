@@ -1,0 +1,35 @@
+import { useState } from "react";
+import type { Category } from "../../../data/category";
+
+interface CategoryTitleProps {
+  category: Category;
+  editFlag: boolean;
+  updateTitle: (title: string, id: number) => void;
+}
+
+function CategoryTitle(ctx: CategoryTitleProps) {
+  const [input, setInput] = useState("");
+
+  function _updateCategoryTitle(_: FormData) {
+    if (!input.trim()) {
+      return;
+    }
+
+    ctx.updateTitle(input, ctx.category.id);
+    setInput(input);
+  }
+  return (
+    <>
+      <form className="px-1" action={_updateCategoryTitle}>
+        <input
+          value={input}
+          className="text-2xs font-bold text-text-700"
+          onChange={(e) => setInput(e.target.value)}
+          placeholder={ctx.category.title}
+        />
+      </form>
+    </>
+  );
+}
+
+export default CategoryTitle;

@@ -12,4 +12,5 @@ export interface Category {
   id: number;
   title: string;
   order: number;
+  modifiable: boolean;
 }

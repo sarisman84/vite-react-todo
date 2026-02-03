@@ -30,15 +30,16 @@ function useCategory(): [Category[], CategoryEvents] {
       return;
     }
 
-    onCategoryCreated("Archive", archive_id);
+    onCategoryCreated("Archive", archive_id, false);
   }
 
-  function onCategoryCreated(title: string, id: number = 0) {
+  function onCategoryCreated(title: string, id: number = 0, modifiable : boolean = true) {
     setCategories((prevArray) => [
       {
         id: id === 0 ? Date.now() : id,
         title,
         order: prevArray.length,
+        modifiable
       },
       ...prevArray,
     ]);
