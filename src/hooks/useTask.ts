@@ -5,7 +5,8 @@ import {
   type Task,
   type TaskEvents,
 } from "../data/task";
-import { archive_id } from "./useCategory";
+import { archive_category } from "../data/category";
+
 
 const task_id: string = "tasks";
 const empty_array: string = "[]";
@@ -27,17 +28,9 @@ function useTask(): [Task[], TaskEvents] {
     localStorage.setItem(task_id, JSON.stringify(entries));
   }, [entries]);
 
-  function onItemUpdated(id: number, completed: boolean) {
-    setData((prevEntries) =>
-      prevEntries.map((item) =>
-        item.id === id ? { ...item, completed } : item,
-      ),
-    );
-  }
-
-  function onTaskCreated(
-    owner_id: number,
-    category_id: number,
+  function createTask(
+    assignedUserIds: number[],
+    categoryId: number,
     title: string,
     description: string,
   ) {
@@ -50,37 +43,67 @@ function useTask(): [Task[], TaskEvents] {
 
     const task: Task = {
       id: Date.now(),
-      category_id,
-      owner_id: [owner_id],
+      categoryId: categoryId,
+      assignedUserIds: assignedUserIds,
       metadata,
     };
 
     setData((prevEntries) => [task, ...prevEntries]);
+    return task;
   }
 
-  function onTaskRemoved(id: number) {
+  function updateTask(
+    id: number,
+    title: string,
+    description: string,
+    assignedUsers: number[],
+  ) {
+    setData((prevEntries) =>
+      prevEntries.map((task) => {
+        if (task.id !== id) {
+          return task;
+        }
+        const metadata: Metadata = {
+          title,
+          description,
+          completed: task.metadata.completed,
+          completion_date: task.metadata.completion_date,
+        };
+        return {
+          ...task,
+          metadata,
+          assignedUserIds: assignedUsers,
+        };
+      }),
+    );
+
+    console.log('[Task/Update]: Updated task_%d', id);
+  }
+
+  function deleteTask(id: number) {
     setData((prevEntries) => prevEntries.filter((item) => item.id !== id));
   }
 
-  function onTaskMoved(id: number, target_category: number) {
+  function moveTask(id: number, target_category: number) {
     setData((prevEntries) =>
       prevEntries.map((item) => {
-        item.category_id = item.id === id ? target_category : item.category_id;
+        item.categoryId = item.id === id ? target_category : item.categoryId;
         return item;
       }),
     );
   }
 
-  function onTaskArchived(id: number) {
-    onTaskMoved(id, archive_id);
+  function archiveTask(id: number) {
+    moveTask(id, archive_category.id);
   }
   const events: TaskEvents = {
-    onTaskArchived,
-    onTaskMoved,
-    onTaskRemoved,
-    onTaskCreated,
+    archiveTask,
+    moveTask,
+    deleteTask,
+    createTask,
+    updateTask,
   };
-  
+
   return [entries, events];
 }
 

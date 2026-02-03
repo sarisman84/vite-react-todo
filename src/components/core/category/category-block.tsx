@@ -1,24 +1,19 @@
 import type { Category } from "../../../data/category";
 import TaskBlock from "../task/task-block";
-import { useState } from "react";
-import type { AppData } from "../../../data/app";
+import { useContext } from "react";
 import CategoryHeader from "./category-header";
 import TaskCreateButton from "../task/task-create-button";
-import TaskModal from "../task/task-modal";
+import { Root } from "../../../data/context/root";
 
 interface CategoryBlockProps {
-  root: AppData;
   category: Category;
 }
 
 function CategoryBlock(ctx: CategoryBlockProps) {
-  const [taskModalOpenFlag, setTaskModalOpenFlag] = useState(false);
-  const [currentTask, setCurrentTask] = useState(
-    ctx.root.constants.invalid_task,
-  );
+  const { tasks } = useContext(Root);
 
-  const filteredTasks = ctx.root.data.tasks.filter(
-    (task) => task.category_id === ctx.category.id,
+  const filteredTasks = tasks.filter(
+    (task) => task.categoryId === ctx.category.id,
   );
 
   return (
@@ -26,8 +21,6 @@ function CategoryBlock(ctx: CategoryBlockProps) {
       <div className="flex flex-col gap-2">
         <CategoryHeader
           category={ctx.category}
-          root={ctx.root}
-          setTCWOpenFlag={setTaskModalOpenFlag}
         />
 
         {filteredTasks.map((task) => (
@@ -35,19 +28,12 @@ function CategoryBlock(ctx: CategoryBlockProps) {
             <TaskBlock
               key={task.id}
               task={task}
-              users={ctx.root.data.users}
-              deleteTask={ctx.root.events.task.onTaskRemoved}
-              setTCWOpenFlag={setTaskModalOpenFlag}
             />
           </div>
         ))}
       </div>
-      <TaskCreateButton setTCWOpenFlag={setTaskModalOpenFlag} />
-      <TaskModal
-        root={ctx.root}
-        task={currentTask}
-        openFlag={taskModalOpenFlag}
-        setOpenFlag={setTaskModalOpenFlag}
+      <TaskCreateButton
+        category={ctx.category}
       />
     </div>
   );

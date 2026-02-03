@@ -1,29 +1,28 @@
 import { EllipsisVertical } from "lucide-react";
-import { useState } from "react";
-import type { AppData } from "../../../data/app";
 import type { Category } from "../../../data/category";
 import ContextMenu from "../../elements/context-menu";
 import CategoryTitle from "./category-title";
 import ContextMenuItem from "../../elements/context-menu-item";
 import { MenuButton } from "@headlessui/react";
+import { useContext } from "react";
+import { Root } from "../../../data/context/root";
+import { Runtime } from "../../../data/context/runtime";
 
 interface CategoryHeaderProps {
   category: Category;
-  root: AppData;
-  setTCWOpenFlag: (value: boolean) => void;
 }
 
 function CategoryHeader(ctx: CategoryHeaderProps) {
-  const [editFlag, _] = useState(false);
+  const { categoryEvents } = useContext(Root);
+  const { modalOpenState } = useContext(Runtime);
 
-  const onCategoryRemoved = ctx.root.events.category.onCategoryRemoved;
+  const [, setOpenFlag] = modalOpenState;
 
   return (
     <div className="flex py-2 px-1 items-center justify-between border-b-8 border-background-300">
       <CategoryTitle
         category={ctx.category}
-        updateTitle={ctx.root.events.category.onCategoryTitleUpdated}
-        editFlag={editFlag}
+        updateTitle={categoryEvents.updateCategory}
       />
       <ContextMenu>
         <MenuButton>
@@ -35,12 +34,12 @@ function CategoryHeader(ctx: CategoryHeaderProps) {
 
         <ContextMenuItem
           name="Add Task"
-          onClick={() => ctx.setTCWOpenFlag(true)}
+          onClick={() => setOpenFlag(true)}
           disable={false}
         />
         <ContextMenuItem
           name="Delete Category"
-          onClick={() => onCategoryRemoved(ctx.category.id)}
+          onClick={() => categoryEvents.deleteCategory(ctx.category.id)}
           disable={!ctx.category.modifiable}
         />
       </ContextMenu>

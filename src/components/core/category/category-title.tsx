@@ -3,7 +3,6 @@ import type { Category } from "../../../data/category";
 
 interface CategoryTitleProps {
   category: Category;
-  editFlag: boolean;
   updateTitle: (title: string, id: number) => void;
 }
 

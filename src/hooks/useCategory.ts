@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import type { Category, CategoryEvents } from "../data/category";
+import { archive_category, type Category, type CategoryEvents } from "../data/category";
 
-export const archive_id: number = -1;
+
 
 const category_id: string = "categories";
 const empty_array: string = "[]";
@@ -22,7 +22,7 @@ function useCategory(): [Category[], CategoryEvents] {
 
   function _tryCreatingArchive() {
     const result = categories.findIndex((item) => {
-      return item.id === archive_id;
+      return item.id === archive_category.id;
     });
 
     // Archive exists, exiting
@@ -30,7 +30,7 @@ function useCategory(): [Category[], CategoryEvents] {
       return;
     }
 
-    onCategoryCreated("Archive", archive_id, false);
+     setCategories((prevArray) => [archive_category, ...prevArray])
   }
 
   function onCategoryCreated(title: string, id: number = 0, modifiable : boolean = true) {
@@ -61,9 +61,9 @@ function useCategory(): [Category[], CategoryEvents] {
   _tryCreatingArchive();
 
   const events: CategoryEvents = {
-    onCategoryRemoved,
-    onCategoryCreated,
-    onCategoryTitleUpdated,
+    deleteCategory: onCategoryRemoved,
+    createCategory: onCategoryCreated,
+    updateCategory: onCategoryTitleUpdated,
   };
 
   return [categories, events];

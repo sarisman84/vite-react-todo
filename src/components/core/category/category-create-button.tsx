@@ -1,13 +1,13 @@
 import { Plus } from "lucide-react";
-import type { OnCategoryCreated } from "../../../data/category";
+import { useContext } from "react";
+import { Root } from "../../../data/context/root";
 
-interface CategoryCreateButtonProps {
-  createCategory: OnCategoryCreated;
-}
 
-function CategoryCreateButton(ctx: CategoryCreateButtonProps) {
+function CategoryCreateButton() {
+  const { categoryEvents } = useContext(Root)
+
   function _createNewCategory() {
-    ctx.createCategory("New Category");
+    categoryEvents.createCategory("New Category");
   }
   return (
     <div className="flex max-h-10 p-4 items-center bg-accent-50 rounded-md  shadow hover:bg-accent-100">

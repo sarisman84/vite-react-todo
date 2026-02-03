@@ -1,27 +1,34 @@
-import { archive_id } from "../hooks/useCategory";
+import { archive_category } from "./category";
 
-export type OnTaskCreate = (
-  owner_id: number,
+export type CreateTask = (
+  owner_id: number[],
   category_id: number,
   title: string,
   description: string,
+) => Task;
+
+export type RemoveTask = (id: number) => void;
+export type MoveTask = (id: number, target_category_id: number) => void;
+export type ArchiveTask = (id: number) => void;
+export type UpdateTask = (
+  id: number,
+  title: string,
+  description: string,
+  assignedUsers: number[],
 ) => void;
 
-export type OnTaskRemove = (id: number) => void;
-export type OnTaskMoved = (id: number, target_category_id: number) => void;
-export type OnTaskArchived = (id: number) => void;
-
 export type TaskEvents = {
-  onTaskCreated: OnTaskCreate;
-  onTaskRemoved: OnTaskRemove;
-  onTaskMoved: OnTaskMoved;
-  onTaskArchived: OnTaskArchived;
+  createTask: CreateTask;
+  deleteTask: RemoveTask;
+  moveTask: MoveTask;
+  archiveTask: ArchiveTask;
+  updateTask: UpdateTask;
 };
 
 export interface Task {
   id: number;
-  category_id: number;
-  owner_id: number[];
+  categoryId: number;
+  assignedUserIds: number[];
   metadata: Metadata;
 }
 
@@ -35,8 +42,8 @@ export interface Metadata {
 export const archiveExampleTasks: Task[] = [
   {
     id: 1,
-    category_id: archive_id,
-    owner_id: [1],
+    categoryId: archive_category.id,
+    assignedUserIds: [1],
     metadata: {
       title: "Example Task",
       description: "This is an example task",
@@ -46,8 +53,8 @@ export const archiveExampleTasks: Task[] = [
   },
   {
     id: 2,
-    category_id: archive_id,
-    owner_id: [1],
+    categoryId: archive_category.id,
+    assignedUserIds: [1],
     metadata: {
       title: "Another Example Task",
       description: "This is another example task",
@@ -57,8 +64,8 @@ export const archiveExampleTasks: Task[] = [
   },
   {
     id: 3,
-    category_id: archive_id,
-    owner_id: [1],
+    categoryId: archive_category.id,
+    assignedUserIds: [1],
     metadata: {
       title: "Completed Task",
       description: "This is a completed task",
@@ -68,13 +75,13 @@ export const archiveExampleTasks: Task[] = [
   },
 ];
 
-export const invalid_task: Task = {
+export const empty_task: Task = {
   id: -1,
-  category_id: -99999,
-  owner_id: [],
+  categoryId: -99999,
+  assignedUserIds: [],
   metadata: {
-    title: "NaN",
-    description: "NaN",
+    title: "",
+    description: "",
     completed: false,
     completion_date: Date.now(),
   },
