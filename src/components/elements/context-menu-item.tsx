@@ -7,13 +7,13 @@ interface ContextMenuItemProps {
 }
 
 function ContextMenuItem(ctx: ContextMenuItemProps) {
-  const disabled = "text-text-600 bg-background-50";
-  const normal = "text-text-900 bg-background-50 hover:bg-accent-200";
+  const disabled = "text-xs text-text-600";
+  const normal = "text-xs text-text-900 hover:bg-background-400";
 
   return (
     <MenuItem>
       <a
-        className={`p-1 ${ctx.disable ? disabled : normal}`}
+        className={`px-2 py-1 ${ctx.disable ? disabled : normal}`}
         onClick={() => (!ctx.disable ? ctx.onClick() : {})}
       >
         {ctx.name}

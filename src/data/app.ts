@@ -8,6 +8,10 @@ type Runtime = {
   currentUser: User;
 };
 
+type Constants = {
+  invalid_task: Task;
+};
+
 type Data = {
   users: User[];
   tasks: Task[];
@@ -24,4 +28,5 @@ export type AppData = {
   data: Data;
   events: Events;
   runtime: Runtime;
+  constants: Constants;
 };

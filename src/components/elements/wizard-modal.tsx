@@ -11,7 +11,7 @@ interface BodyProps extends React.PropsWithChildren {}
 function Body(ctx: BodyProps) {
   return (
     <div className="flex flex-col gap-1 self-center w-full">
-      <div className="flex grow justify-center pt-4">
+      <div className="flex flex-col grow justify-center">
         {React.Children.count(ctx.children) > 0 ? (
           ctx.children
         ) : (
@@ -33,8 +33,8 @@ function WizardModal(ctx: WizardModalProps) {
         className="relative z-50"
       >
         <DialogBackdrop className="fixed inset-0 bg-background-400/30" />
-        <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-          <DialogPanel className="flex w-2xl min-h-75 bg-background-50 rounded-md px-7 pb-5 space-y-4 self-center justify-center shadow">
+        <div className="fixed inset-0 flex w-screen items-center justify-center">
+          <DialogPanel className="flex flex-col w-2xl min-h-75 bg-background-50 rounded-md px-7 py-4 space-y-4 self-center justify-start shadow">
             <Body children={ctx.children} />
           </DialogPanel>
         </div>

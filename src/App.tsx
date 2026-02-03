@@ -5,6 +5,7 @@ import CategoryBlock from "./components/core/category/category-block";
 import CategoryCreateButton from "./components/core/category/category-create-button";
 import type { AppData } from "./data/app";
 import { defaultUser } from "./data/user";
+import { invalid_task } from "./data/task";
 
 function App() {
   const taskData = useTask();
@@ -26,6 +27,10 @@ function App() {
 
     runtime: {
       currentUser: defaultUser,
+    },
+
+    constants: {
+      invalid_task: invalid_task,
     },
   };
 

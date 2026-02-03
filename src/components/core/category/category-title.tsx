@@ -20,10 +20,10 @@ function CategoryTitle(ctx: CategoryTitleProps) {
   }
   return (
     <>
-      <form className="px-1" action={_updateCategoryTitle}>
+      <form className="px-2" action={_updateCategoryTitle}>
         <input
           value={input}
-          className="text-2xs font-bold text-text-700"
+          className="text-2xs font-bold text-text-900"
           onChange={(e) => setInput(e.target.value)}
           placeholder={ctx.category.title}
         />

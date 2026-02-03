@@ -1,16 +1,16 @@
-import { TableOfContents } from "lucide-react";
+import { EllipsisVertical } from "lucide-react";
 import { useState } from "react";
 import type { AppData } from "../../../data/app";
 import type { Category } from "../../../data/category";
 import ContextMenu from "../../elements/context-menu";
 import CategoryTitle from "./category-title";
-import { MenuItem } from "@headlessui/react";
 import ContextMenuItem from "../../elements/context-menu-item";
+import { MenuButton } from "@headlessui/react";
 
 interface CategoryHeaderProps {
   category: Category;
   root: AppData;
-  setOpenFlag: (value: boolean) => void;
+  setTCWOpenFlag: (value: boolean) => void;
 }
 
 function CategoryHeader(ctx: CategoryHeaderProps) {
@@ -19,23 +19,23 @@ function CategoryHeader(ctx: CategoryHeaderProps) {
   const onCategoryRemoved = ctx.root.events.category.onCategoryRemoved;
 
   return (
-    <div className="flex justify-between">
+    <div className="flex py-2 px-1 items-center justify-between border-b-8 border-background-300">
       <CategoryTitle
         category={ctx.category}
         updateTitle={ctx.root.events.category.onCategoryTitleUpdated}
         editFlag={editFlag}
       />
-      <ContextMenu
-        menuButton={
-          <TableOfContents
+      <ContextMenu>
+        <MenuButton>
+          <EllipsisVertical
             size={20}
             className="text-text-600 hover:text-text-900"
           />
-        }
-      >
+        </MenuButton>
+
         <ContextMenuItem
           name="Add Task"
-          onClick={() => ctx.setOpenFlag(true)}
+          onClick={() => ctx.setTCWOpenFlag(true)}
           disable={false}
         />
         <ContextMenuItem

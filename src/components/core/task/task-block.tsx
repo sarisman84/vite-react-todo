@@ -8,6 +8,7 @@ interface TaskBlockProps {
   task: Task;
   users: User[];
   deleteTask: OnTaskRemove;
+  setTCWOpenFlag: (value: boolean) => void;
 }
 
 interface ToolbarProps {
@@ -45,6 +46,7 @@ function TaskBlock(ctx: TaskBlockProps) {
         className="flex gap-1 w-full min-h-20"
         onMouseOver={() => setMouseHover(true)}
         onMouseOut={() => setMouseHover(false)}
+        onClick={() => ctx.setTCWOpenFlag(true)}
       >
         <div className="flex justify-between grow gap-2 rounded-md p-2 bg-accent-50 shadow hover:bg-accent-100">
           <label>{ctx.task.metadata.title}</label>

@@ -67,3 +67,15 @@ export const archiveExampleTasks: Task[] = [
     },
   },
 ];
+
+export const invalid_task: Task = {
+  id: -1,
+  category_id: -99999,
+  owner_id: [],
+  metadata: {
+    title: "NaN",
+    description: "NaN",
+    completed: false,
+    completion_date: Date.now(),
+  },
+};
