@@ -10,7 +10,7 @@ interface DescriptionProps {
 
 function Description(ctx: DescriptionProps) {
   const { modalEditModeState } = useContext(Runtime);
-  
+
   const [modalEditMode] = modalEditModeState;
   const [input, setInput] = ctx.inputState;
   return (
@@ -21,7 +21,7 @@ function Description(ctx: DescriptionProps) {
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Lorem Ipsum"
+            placeholder={ctx.task?.metadata?.description ?? "Lorem Ipsum"}
             className="text-xs w-full min-h-30 text-text-900"
           />
         ) : (

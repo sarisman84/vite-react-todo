@@ -27,7 +27,7 @@ export function Title(ctx: TitleProps) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           className="font-bold text-text-800"
-          placeholder="New Task"
+          placeholder={ctx.task?.metadata?.title ?? "New Task"}
         />
       ) : (
         <h1 className="font-bold text-text-800">{ctx.task?.metadata?.title}</h1>
