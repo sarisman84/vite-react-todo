@@ -25,7 +25,7 @@ function TaskModal() {
 
   const [title, setTitle] = useState(targetTask.metadata.title);
   const [desc, setDesc] = useState(targetTask.metadata.description);
-  const [assignedUsers, setAssignedUsers] = useState<number[]>([]);
+  const [assignedUsers, setAssignedUsers] = useState<number[]>(targetTask?.assignedUserIds ?? []);
 
   return (
     <>
