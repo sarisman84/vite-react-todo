@@ -1,47 +1,47 @@
 import { useContext } from "react";
 import { ModalEditMode } from "../../../../data/task-modal/modal-edit-mode";
 import { Root } from "../../../../data/context/root";
-import type { Task } from "../../../../data/task";
+import { empty_task, type Task } from "../../../../data/task";
 import type { Category } from "../../../../data/category";
 import { Runtime } from "../../../../data/context/runtime";
 
 interface SubmitButtonProps {
-  targetTask: Task;
-  targetCategory: Category;
-  title: string;
-  description: string;
-  assignedUsers: number[];
+  targetTaskState: [Task, (value: Task) => void];
+  targetCategoryState: [Category, (value: Category) => void];
 }
 
 function SubmitButton(ctx: SubmitButtonProps) {
   const { taskEvents } = useContext(Root);
-  const { modalEditModeState, modalOpenState, targetTaskState } = useContext(Runtime);
+  const { modalEditModeState, modalOpenState } =
+    useContext(Runtime);
 
   const [modalEditMode, setModalEditMode] = modalEditModeState;
   const [, setModalOpenFlag] = modalOpenState;
-  const [, setTargetTask] = targetTaskState;
+
+  const [tempTask, setTempTask] = ctx.targetTaskState;
+  const [targetCategory] = ctx.targetCategoryState;
 
   function _handleSubmit() {
     switch (modalEditMode) {
       case ModalEditMode.Create:
         taskEvents.createTask(
-          ctx.assignedUsers,
-          ctx.targetCategory.id,
-          ctx.title,
-          ctx.description,
+          tempTask.assignedUserIds,
+          targetCategory.id,
+          tempTask.metadata.title,
+          tempTask.metadata.description,
         );
         setModalEditMode(ModalEditMode.View);
         setModalOpenFlag(false);
         break;
       case ModalEditMode.Edit:
         const updatedTask = taskEvents.updateTask(
-          ctx.targetTask.id,
-          ctx.title ?? ctx.targetTask.metadata.title,
-          ctx.description ?? ctx.targetTask.metadata.description,
-          ctx.assignedUsers ?? ctx.targetTask.assignedUserIds,
+          tempTask.id,
+          tempTask.metadata.title,
+          tempTask.metadata.description,
+          tempTask.assignedUserIds,
         );
         setModalEditMode(ModalEditMode.View);
-        setTargetTask(updatedTask ?? {} as Task)
+        setTempTask(updatedTask ?? empty_task);
         break;
     }
   }

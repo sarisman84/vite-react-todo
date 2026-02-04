@@ -10,33 +10,46 @@ import { Root } from "../../../../data/context/root";
 import { Runtime } from "../../../../data/context/runtime";
 
 interface UserTagsProps {
-  task: Task;
-  assignedUsersState: [number[], (value: number[]) => void];
+  taskState: [Task, (value: Task) => void];
 }
 
 function _getUsername(id: number, users: User[]) {
   return users.find((user) => user.id === id)?.name;
 }
 
+function _getAvailableUsers(task: Task, users: User[]): User[] {
+  if (
+    task === undefined ||
+    task.assignedUserIds === undefined ||
+    task.assignedUserIds.length === 0
+  ) {
+    return users;
+  }
+  return users.filter((user) =>
+    task.assignedUserIds.find((owner) => user.id === owner),
+  );
+}
+
 function UserTags(ctx: UserTagsProps) {
   const { users } = useContext(Root);
   const { modalEditModeState } = useContext(Runtime);
 
-  const [, setAssignedUsersIds] = ctx.assignedUsersState;
+  const [task, setTask] = ctx.taskState;
   const [modalEditMode] = modalEditModeState;
 
-  const availableUsers = users.filter((user) =>
-    ctx.task.assignedUserIds.find((id) => id !== user.id),
-  );
+  const availableUsers = _getAvailableUsers(task, users);
 
   return (
     <div className="flex items-center gap-1">
-      {ctx.task.assignedUserIds.map((id) => (
-        <label className="text-xs font-bold bg-accent-200 rounded-md py-1 px-1.5">
+      {task.assignedUserIds.map((id) => (
+        <label
+          key={id}
+          className="text-xs font-bold bg-accent-200 rounded-md py-1 px-1.5"
+        >
           {_getUsername(id, users)}
         </label>
       ))}
-      {(modalEditMode !== ModalEditMode.View && availableUsers.length > 0) && (
+      {modalEditMode !== ModalEditMode.View && availableUsers.length > 0 && (
         <ContextMenu>
           <MenuButton className="flex flex-col justify-center grow">
             <Plus
@@ -50,7 +63,10 @@ function UserTags(ctx: UserTagsProps) {
               key={user.id}
               name={user.name}
               onClick={() => {
-                setAssignedUsersIds([user.id, ...ctx.task.assignedUserIds]);
+                setTask({
+                  ...task,
+                  assignedUserIds: [...task.assignedUserIds, user.id],
+                });
               }}
               disable={false}
             ></ContextMenuItem>

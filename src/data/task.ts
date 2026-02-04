@@ -80,7 +80,7 @@ export const empty_task: Task = {
   categoryId: -99999,
   assignedUserIds: [],
   metadata: {
-    title: "",
+    title: "New Task",
     description: "",
     completed: false,
     completion_date: Date.now(),

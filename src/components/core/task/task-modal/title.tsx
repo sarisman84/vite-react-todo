@@ -1,32 +1,33 @@
 import { useContext } from "react";
 import type { Task } from "../../../../data/task";
-import {
-  ModalEditMode,
-  toString,
-} from "../../../../data/task-modal/modal-edit-mode";
+import { ModalEditMode } from "../../../../data/task-modal/modal-edit-mode";
 import { Runtime } from "../../../../data/context/runtime";
 
 interface TitleProps {
-  task: Task;
-  inputState: [string, (value: string) => void];
+  taskState: [Task, (value: Task) => void];
 }
 export function Title(ctx: TitleProps) {
   const { modalEditModeState } = useContext(Runtime);
 
   const [modalEditMode] = modalEditModeState;
-  const [input, setInput] = ctx.inputState;
+  const [task, setTask] = ctx.taskState;
 
   return (
     <div className="flex">
       {modalEditMode !== ModalEditMode.View ? (
         <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
+          value={task.metadata.title}
+          onChange={(e) =>
+            setTask({
+              ...task,
+              metadata: { ...task.metadata, title: e.target.value },
+            })
+          }
           className="font-bold text-text-800"
-          placeholder={ctx.task?.metadata?.title ?? "New Task"}
+          placeholder={task.metadata.title}
         />
       ) : (
-        <h1 className="font-bold text-text-800">{ctx.task?.metadata?.title}</h1>
+        <h1 className="font-bold text-text-800">{task.metadata.title}</h1>
       )}
     </div>
   );

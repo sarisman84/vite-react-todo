@@ -65,10 +65,9 @@ function useTask(): [Task[], TaskEvents] {
           return task;
         }
         const metadata: Metadata = {
-          title,
-          description,
-          completed: task.metadata.completed,
-          completion_date: task.metadata.completion_date,
+          ...task.metadata,
+          title: title !== "" ? title : task.metadata.title,
+          description: description !== "" ? description : task.metadata.description,
         };
         newTask = {
           ...task,

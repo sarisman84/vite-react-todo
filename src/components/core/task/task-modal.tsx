@@ -18,37 +18,25 @@ function TaskModal() {
     modalOpenState,
   } = useContext(Runtime);
 
-  const [targetTask] = targetTaskState;
-  const [targetCategory] = targetCategoryState;
   const [modalEditMode, setModalEditMode] = modalEditModeState;
   const [openFlag, setOpenFlag] = modalOpenState;
-
-  const [title, setTitle] = useState(targetTask.metadata.title);
-  const [desc, setDesc] = useState(targetTask.metadata.description);
-  const [assignedUsers, setAssignedUsers] = useState<number[]>(targetTask?.assignedUserIds ?? []);
 
   return (
     <>
       <WizardModal openFlag={openFlag} setOpenFlag={setOpenFlag}>
         <div className="flex flex-col gap-4 w-full h-full justify-between">
           <div className="flex justify-between">
-            <Title task={targetTask} inputState={[title, setTitle]} />
+            <Title taskState={targetTaskState} />
             <div className="flex gap-1">
-              <UserTags
-                task={targetTask}
-                assignedUsersState={[assignedUsers, setAssignedUsers]}
-              />
+              <UserTags taskState={targetTaskState} />
               <EditButton setModalEditMode={setModalEditMode} />
             </div>
           </div>
-          <Description task={targetTask} inputState={[desc, setDesc]} />
+          <Description taskState={targetTaskState} />
           {modalEditMode !== ModalEditMode.View && (
             <SubmitButton
-              targetTask={targetTask}
-              targetCategory={targetCategory}
-              title={title}
-              description={desc}
-              assignedUsers={assignedUsers}
+              targetTaskState={targetTaskState}
+              targetCategoryState={targetCategoryState}
             />
           )}
         </div>
