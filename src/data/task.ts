@@ -15,7 +15,7 @@ export type UpdateTask = (
   title: string,
   description: string,
   assignedUsers: number[],
-) => void;
+) => Task | undefined;
 
 export type TaskEvents = {
   createTask: CreateTask;

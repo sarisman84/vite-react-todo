@@ -15,10 +15,11 @@ interface SubmitButtonProps {
 
 function SubmitButton(ctx: SubmitButtonProps) {
   const { taskEvents } = useContext(Root);
-  const { modalEditModeState, modalOpenState } = useContext(Runtime);
-  
+  const { modalEditModeState, modalOpenState, targetTaskState } = useContext(Runtime);
+
   const [modalEditMode, setModalEditMode] = modalEditModeState;
   const [, setModalOpenFlag] = modalOpenState;
+  const [, setTargetTask] = targetTaskState;
 
   function _handleSubmit() {
     switch (modalEditMode) {
@@ -33,13 +34,14 @@ function SubmitButton(ctx: SubmitButtonProps) {
         setModalOpenFlag(false);
         break;
       case ModalEditMode.Edit:
-        taskEvents.updateTask(
+        const updatedTask = taskEvents.updateTask(
           ctx.targetTask.id,
-          ctx.title,
-          ctx.description,
-          ctx.assignedUsers,
+          ctx.title ?? ctx.targetTask.metadata.title,
+          ctx.description ?? ctx.targetTask.metadata.description,
+          ctx.assignedUsers ?? ctx.targetTask.assignedUserIds,
         );
         setModalEditMode(ModalEditMode.View);
+        setTargetTask(updatedTask ?? {} as Task)
         break;
     }
   }

@@ -16,10 +16,6 @@ export function Title(ctx: TitleProps) {
   const [modalEditMode] = modalEditModeState;
   const [input, setInput] = ctx.inputState;
 
-  console.log(
-    `[Component/TaskModal/Title]: ModalEditMode is in ${toString(modalEditMode)} mode`,
-  );
-
   return (
     <div className="flex">
       {modalEditMode !== ModalEditMode.View ? (

@@ -7,7 +7,6 @@ import {
 } from "../data/task";
 import { archive_category } from "../data/category";
 
-
 const task_id: string = "tasks";
 const empty_array: string = "[]";
 
@@ -57,9 +56,11 @@ function useTask(): [Task[], TaskEvents] {
     title: string,
     description: string,
     assignedUsers: number[],
-  ) {
-    setData((prevEntries) =>
-      prevEntries.map((task) => {
+  ): Task {
+    let newTask : Task = {} as Task;
+
+    setData((prevEntries) => {
+      return prevEntries.map((task) : Task => {
         if (task.id !== id) {
           return task;
         }
@@ -69,15 +70,18 @@ function useTask(): [Task[], TaskEvents] {
           completed: task.metadata.completed,
           completion_date: task.metadata.completion_date,
         };
-        return {
+        newTask = {
           ...task,
           metadata,
           assignedUserIds: assignedUsers,
         };
-      }),
-    );
 
-    console.log('[Task/Update]: Updated task_%d', id);
+        return newTask;
+      });
+    });
+
+    console.log("[Task/Update]: Updated task_%d", id);
+    return newTask;
   }
 
   function deleteTask(id: number) {
