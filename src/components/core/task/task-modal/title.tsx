@@ -1,6 +1,9 @@
 import { useContext } from "react";
 import type { Task } from "../../../../data/task";
-import { ModalEditMode } from "../../../../data/task-modal/modal-edit-mode";
+import {
+  ModalEditMode,
+  toString,
+} from "../../../../data/task-modal/modal-edit-mode";
 import { Runtime } from "../../../../data/context/runtime";
 
 interface TitleProps {
@@ -12,6 +15,10 @@ export function Title(ctx: TitleProps) {
 
   const [modalEditMode] = modalEditModeState;
   const [input, setInput] = ctx.inputState;
+
+  console.log(
+    `[Component/TaskModal/Title]: ModalEditMode is in ${toString(modalEditMode)} mode`,
+  );
 
   return (
     <div className="flex">

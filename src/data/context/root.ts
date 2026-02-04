@@ -13,18 +13,8 @@ export type RootContext = {
   userEvents: UserEvents;
   categoryEvents: CategoryEvents;
 
-  runtime: RuntimeContext;
-  taskModal: TaskModalContext;
 };
 
-export type RuntimeContext = {
-  targetTaskState: [Task, (value: Task) => void];
-  targetCategoryState: [Category, (value: Category) => void];
-};
 
-export type TaskModalContext = {
-  modalOpenState: [boolean, (value: boolean) => void];
-  modalEditModeState: [ModalEditMode, (value: ModalEditMode) => void];
-};
 
 export const Root = createContext<RootContext>({} as RootContext);

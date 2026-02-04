@@ -1,10 +1,12 @@
 import { useContext, useState } from "react";
-import type { RemoveTask, Task, TaskEvents } from "../../../data/task";
+import type { Task } from "../../../data/task";
 import type { User } from "../../../data/user";
 import Label from "../../elements/label";
 import { Trash } from "lucide-react";
 import { Root } from "../../../data/context/root";
 import { Runtime } from "../../../data/context/runtime";
+import { ModalEditMode } from "../../../data/task-modal/modal-edit-mode";
+import type { Category } from "../../../data/category";
 
 interface TaskBlockProps {
   task: Task;
@@ -36,12 +38,27 @@ function Toolbar(ctx: ToolbarProps) {
   );
 }
 
+function _getCategory(
+  id: number,
+  categories: Category[],
+): Category | undefined {
+  return categories.find((category: Category) => category.id === id);
+}
+
 function TaskBlock(ctx: TaskBlockProps) {
-  const { users } = useContext(Root);
-  const { modalOpenState } = useContext(Runtime);
+  const { users, categories } = useContext(Root);
+  const {
+    modalOpenState,
+    modalEditModeState,
+    targetTaskState,
+    targetCategoryState,
+  } = useContext(Runtime);
 
   const [mouseHover, setMouseHover] = useState(false);
   const [, setOpenFlag] = modalOpenState;
+  const [, setModalEditMode] = modalEditModeState;
+  const [, setTargetTask] = targetTaskState;
+  const [, setTargetCategory] = targetCategoryState;
 
   return (
     <>
@@ -49,7 +66,14 @@ function TaskBlock(ctx: TaskBlockProps) {
         className="flex gap-1 w-full min-h-20"
         onMouseOver={() => setMouseHover(true)}
         onMouseOut={() => setMouseHover(false)}
-        onClick={() => setOpenFlag(true)}
+        onClick={() => {
+          setTargetTask(ctx.task);
+          setTargetCategory(
+            _getCategory(ctx.task.id, categories) ?? ({} as Category),
+          );
+          setOpenFlag(true);
+          setModalEditMode(ModalEditMode.View);
+        }}
       >
         <div className="flex justify-between grow gap-2 rounded-md p-2 bg-accent-50 shadow hover:bg-accent-100">
           <label>{ctx.task.metadata.title}</label>
