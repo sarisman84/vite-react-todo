@@ -18,7 +18,7 @@ function Main() {
 
   return (
     <Root.Provider value={rootContext}>
-      <main className="py-5 h-screen space-y-5 overflow-y-auto bg-amber-200">
+      <main className="h-screen overflow-y-auto bg-amber-200">
         {rootContext.currentPage.state}
       </main>
     </Root.Provider>
